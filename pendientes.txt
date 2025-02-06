@@ -1,0 +1,3 @@
+que el sistema pueda cruzar informacion con los rips, que audite las historias clinicas
+que saque los indicadores, que grafique lo que se necesita, que grafique lo que se a canalizado
+agregar los sexos a los rangos de los cursos de vida--realizado

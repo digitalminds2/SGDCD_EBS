@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Conversor de Datos</title>
+    <link rel="icon" href="/static/LOG CIR.png" type="image/x-icon">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            font-family: 'Arial', sans-serif;
+            display: flex;
+            flex-direction: column;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        body {
+            background-color: #f8f9fa;
+        }
+
+        .navbar {
+            position: -webkit-sticky; 
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            background-color: rgba(255, 255, 255, 0.8);
+            border-bottom: 1px solid #dee2e6;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+        }
+
+        .navbar-brand {
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .navbar-brand:hover {
+            transform: scale(1.1);
+        }
+
+        .container {
+            margin-top: 50px;
+            flex: 1;
+        }
+
+        .btn {
+            margin: 5px;
+            border-radius: 50px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        .btn-primary {
+            background-color: #007bff;
+            border-color: #007bff;
+        }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+            border-color: #0056b3;
+        }
+
+        .btn:hover {
+            transform: scale(1.05);
+        }
+
+        .card {
+            border: none;
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        .card-header {
+            background: linear-gradient(90deg, #007bff, #0056b3);
+            color: #fff;
+            border-bottom: 2px solid #0056b3;
+            border-radius: 15px 15px 0 0;
+            text-align: center;
+            font-family: 'Roboto', sans-serif;
+        }
+
+        .card-body {
+            padding: 30px;
+        }
+
+        #message {
+            margin-top: 20px;
+            font-size: 1.1em;
+            font-weight: bold;
+        }
+
+        #message.success {
+            color: #28a745;
+        }
+
+        #message.error {
+            color: #dc3545;
+        }
+
+        #filePreview {
+            border-radius: 10px;
+            border: 1px solid #dee2e6;
+            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        footer {
+            margin-top: auto;
+            padding: 20px 0;
+            background-color: #0056b3;
+            color: #f8f9fa;
+            text-align: center;
+            font-size: 0.9em;
+            border-top: 5px solid #007bff;
+        }
+
+        footer p {
+            margin: 0;
+        }
+
+        body.bg-dark {
+            background-color: #343a40;
+            color: #f8f9fa;
+        }
+
+        body.text-light {
+            color: #f8f9fa;
+        }
+    </style>
+</head>
+
+<body class="bg-dark text-light">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">
+                <img src="/static/LOG CIR.png" alt="Logo" width="40" height="40" class="d-inline-block align-text-top">
+                Digitalminds23
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto"></ul>
+                <button id="themeToggle" class="btn btn-outline-secondary">
+                    <i class="fas fa-moon"></i> Tema Oscuro
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="card">
+            <div class="card-header">
+                <h1>Sistema de Gestión y Conversión de Datos - EBS</h1>
+            </div>
+            <div class="card-body">
+                <form id="uploadForm" enctype="multipart/form-data">
+                    <div class="mb-3">
+                        <label for="fileInput" class="form-label">Cargar Archivo</label>
+                        <input class="form-control" type="file" id="fileInput" name="file">
+                    </div>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-upload"></i> Cargar Archivo
+                    </button>
+                </form>
+
+                <button id="convertBtn" class="btn btn-success">
+                    <i class="fas fa-exchange-alt"></i> Convertir Datos
+                </button>
+
+                <div class="container mt-4">
+                    <div class="mb-3">
+                        <label for="municipioSelect" class="form-label">Seleccionar Municipio</label>
+                        <select class="form-control" id="municipioSelect">
+                            <option value="">Seleccionar municipio</option>
+                        </select>
+                    </div>
+                </div>
+
+                <button id="filterBtn" class="btn btn-info">
+                    <i class="fas fa-filter"></i> Descargar por Municipio
+                </button>
+
+                <a id="downloadBtn" class="btn btn-info" href="#">
+                    <i class="fas fa-download"></i> Descargar Archivo
+                </a>
+                <button id="alertasBtn" class="btn btn-warning mt-3">
+                    <i class="fas fa-exclamation-triangle"></i> Descargar Alertas Familiares
+                </button>
+                <button id="alertasBtn" class="btn btn-warning mt-3">
+                    <i class="fas fa-exclamation-triangle"></i> Descargar Alertas Individuales
+                </button>
+                <button id="alertasBtn" class="btn btn-warning mt-3">
+                    <i class="fas fa-exclamation-triangle"></i> Descargar Planes Colectivos
+                </button>
+
+                <div id="message"></div>
+            </div>
+        </div>
+    </div>  
+    <div class="container mt-4">
+        <div class="mb-3">
+            <label for="filePreview" class="form-label"><i class="fas fa-eye"></i> Vista Previa del Archivo</label>
+            <textarea class="form-control" id="filePreview" rows="5" readonly></textarea>
+        </div>
+    </div>    
+    <footer>
+        <p>&copy; Desarrollado por Digitalminds23. Todos los derechos reservados.</p>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.getElementById('themeToggle').onclick = function () {
+            document.body.classList.toggle('bg-dark');
+            document.body.classList.toggle('text-light');
+            this.innerHTML = document.body.classList.contains('bg-dark') ?
+                '<i class="fas fa-sun"></i> Tema Claro' :
+                '<i class="fas fa-moon"></i> Tema Oscuro';
+        };
+
+        document.getElementById('fileInput').addEventListener('change', function (event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    document.getElementById('filePreview').textContent = e.target.result;
+                };
+                reader.readAsText(file);
+            }
+        });
+
+        document.getElementById('uploadForm').onsubmit = function (event) {
+            event.preventDefault();
+            let formData = new FormData(this);
+            fetch('/upload', {
+                method: 'POST',
+                body: formData
+            }).then(response => response.json())
+                .then(result => {
+                    document.getElementById('message').innerText = result.message;
+                    document.getElementById('message').className = result.success ? 'success' : 'error';
+
+                    if (result.success) {
+                        fetch('/municipios')
+                            .then(response => response.json())
+                            .then(municipios => {
+                                const select = document.getElementById('municipioSelect');
+                                select.innerHTML = '<option value="">Seleccionar municipio</option>';
+                                municipios.forEach(municipio => {
+                                    const option = document.createElement('option');
+                                    option.value = municipio;
+                                    option.textContent = municipio;
+                                    select.appendChild(option);
+                                });
+                            });
+                    }
+
+                }).catch(error => {
+                    document.getElementById('message').innerText = "Error al cargar el archivo.";
+                    document.getElementById('message').className = 'error';
+                });
+        };
+
+        document.getElementById('convertBtn').onclick = function () {
+            fetch('/convert', {
+                method: 'POST'
+            }).then(response => response.json())
+                .then(result => {
+                    document.getElementById('message').innerText = result.message;
+                    document.getElementById('message').className = result.success ? 'success' : 'error';
+                }).catch(error => {
+                    document.getElementById('message').innerText = "Error durante la conversión.";
+                    document.getElementById('message').className = 'error';
+                });
+        };
+
+        document.getElementById('filterBtn').onclick = function () {
+            const municipio = document.getElementById('municipioSelect').value;
+            if (municipio) {
+                window.location.href = `/download?municipio=${municipio}`;
+            } else {
+                alert("Por favor, seleccione un municipio.");
+            }
+        };
+
+        document.getElementById('downloadBtn').onclick = function () {
+            window.location.href = '/download';
+        };
+
+        document.getElementById('alertasBtn').addEventListener('click', function() {
+    var municipioSelect = document.getElementById('municipioSelect');
+    var municipio = municipioSelect.value;
+
+    var url = '/download_alertas';
+    if (municipio) {
+        url += '?municipio=' + encodeURIComponent(municipio);
+    }
+
+    window.location.href = url;
+});
+
+    </script>
+</body>
+
+</html>
